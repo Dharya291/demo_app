@@ -1,8 +1,7 @@
 import { useState, useCallback } from "react";
 import { TextField, Tag, LegacyStack } from "@shopify/polaris";
 
-export default function TagInput() {
-  const [tags, setTags] = useState([]);
+export default function TagInput({tags, setTags}) {
   const [inputValue, setInputValue] = useState("");
 
   // Add tags when space or enter is pressed
@@ -20,7 +19,7 @@ export default function TagInput() {
         setInputValue(""); // Clear input after adding tags
       }
     },
-    [inputValue, tags]
+    [inputValue, setTags, tags]
   );
 
   // Handle input change (Triggers tag creation on space)

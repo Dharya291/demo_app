@@ -10,17 +10,21 @@ import {
 import { CalendarIcon } from "@shopify/polaris-icons";
 import { useEffect, useRef, useState } from "react";
 
-export default function DatePickerField({ label }) {
+export default function DatePickerField({ label, selectedDate ,setSelectedDate }) {
   const [visible, setVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
   const [{ month, year }, setDate] = useState({
     month: selectedDate.getMonth(),
     year: selectedDate.getFullYear(),
   });
   // const formattedValue = selectedDate.toISOString().slice(0, 10);
-  const formattedValue = `${selectedDate.getFullYear()}-${String(
-    selectedDate.getMonth() + 1
-  ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
+  const formattedValue = `${String(selectedDate.getDate()).padStart(
+    2,
+    "0"
+  )}-${String(selectedDate.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${selectedDate.getFullYear()}`;
 
   const datePickerRef = useRef(null);
   function handleInputValueChange() {
@@ -44,6 +48,7 @@ export default function DatePickerField({ label }) {
       });
     }
   }, [selectedDate]);
+  console.log(selectedDate, "34568554");
   return (
     <BlockStack inlineAlign="start" gap="400">
       <Box minWidth="276px">

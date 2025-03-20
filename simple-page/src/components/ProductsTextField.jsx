@@ -1,7 +1,7 @@
 import { LegacyStack, Tag, Autocomplete } from "@shopify/polaris";
 import { useState, useCallback, useMemo } from "react";
 
-export default function ProductsTextField() {
+export default function ProductsTextField({selectedOptions, setSelectedOptions , inputValue, setInputValue}) {
   const deselectedOptions = useMemo(
     () => [
       { value: "smartphone", label: "Smartphone" },
@@ -27,8 +27,6 @@ export default function ProductsTextField() {
     ],
     []
   );
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState(deselectedOptions);
 
   const updateText = useCallback(
@@ -44,7 +42,6 @@ export default function ProductsTextField() {
       const resultOptions = deselectedOptions.filter((option) =>
         option.label.match(filterRegex)
       );
-
       setOptions(resultOptions);
     },
     [deselectedOptions]

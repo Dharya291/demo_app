@@ -28,3 +28,6 @@ li {
 .Polaris-DataTable__Cell{
   justify-items: end;
 }
+.Polaris-ButtonGroup{
+  justify-content: center;
+}
