@@ -12,12 +12,10 @@ import { useEffect, useRef, useState } from "react";
 
 export default function DatePickerField({ label, selectedDate ,setSelectedDate }) {
   const [visible, setVisible] = useState(false);
-  // const [selectedDate, setSelectedDate] = useState(new Date());
   const [{ month, year }, setDate] = useState({
     month: selectedDate.getMonth(),
     year: selectedDate.getFullYear(),
   });
-  // const formattedValue = selectedDate.toISOString().slice(0, 10);
   const formattedValue = `${String(selectedDate.getDate()).padStart(
     2,
     "0"
@@ -48,7 +46,6 @@ export default function DatePickerField({ label, selectedDate ,setSelectedDate }
       });
     }
   }, [selectedDate]);
-  console.log(selectedDate, "34568554");
   return (
     <BlockStack inlineAlign="start" gap="400">
       <Box minWidth="276px">

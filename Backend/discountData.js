@@ -1,39 +1,99 @@
 const discounts = [
-    { 
-      id: 1, 
-      title: "New Year Sale", 
-      date: "20-03-2025", 
-      status: "Active", 
-      type: "Percentage" 
+  {
+    id: 9827,
+    title: "discount 65",
+    status: true,
+    type: "percentage",
+    discountTiers: [{ id: 1742534136781, quantity: "76", discount: 32 }],
+    selectedProduct: "Specific Tags",
+    productOptions: ["fitness_tracker", "gaming_laptop", "wireless_earbuds"],
+    tagsOptions: ["Gdgsj"],
+    collectionOptions: "today",
+    discountStrategy: "",
+    combinations: {
+      productDiscounts: false,
+      shippingDiscounts: false,
+      orderDiscounts: false,
     },
-    { 
-      id: 2, 
-      title: "Summer Special", 
-      date: "20-03-2025", 
-      status: "Active", 
-      type: "Fixed" 
+    startDate: "21-03-2025",
+    endDateStatus: false,
+  },
+  {
+    id: 121,
+    title: "discount 65",
+    status: true,
+    type: "percentage",
+    discountTiers: [{ id: 1742534136781, quantity: "76", discount: 32 }],
+    selectedProduct: "Specific Tags",
+    productOptions: ["fitness_tracker", "gaming_laptop", "wireless_earbuds"],
+    tagsOptions: ["Gdgsj"],
+    collectionOptions: "today",
+    discountStrategy: "",
+    combinations: {
+      productDiscounts: false,
+      shippingDiscounts: false,
+      orderDiscounts: false,
     },
-    { 
-      id: 3, 
-      title: "Black Friday Deal", 
-      date: "20-03-2025", 
-      status: "Disabled", 
-      type: "Percentage" 
+    startDate: "21-03-2025",
+    endDateStatus: false,
+  },
+  {
+    id: 1456,
+    title: "discount 65",
+    status: true,
+    type: "percentage",
+    discountTiers: [{ id: 1742534136781, quantity: "76", discount: 32 }],
+    selectedProduct: "Specific Tags",
+    productOptions: ["fitness_tracker", "gaming_laptop", "wireless_earbuds"],
+    tagsOptions: ["Gdgsj"],
+    collectionOptions: "today",
+    discountStrategy: "",
+    combinations: {
+      productDiscounts: false,
+      shippingDiscounts: false,
+      orderDiscounts: false,
     },
-    { 
-      id: 4, 
-      title: "Christmas Offer", 
-      date: "20-03-2025", 
-      status: "Disabled", 
-      type: "Fixed" 
+    startDate: "21-03-2025",
+    endDateStatus: false,
+  },
+  {
+    id: 9854,
+    title: "discount 65",
+    status: true,
+    type: "percentage",
+    discountTiers: [{ id: 1742534136781, quantity: "76", discount: 32 }],
+    selectedProduct: "Specific Tags",
+    productOptions: ["fitness_tracker", "gaming_laptop", "wireless_earbuds"],
+    tagsOptions: ["Gdgsj"],
+    collectionOptions: "today",
+    discountStrategy: "",
+    combinations: {
+      productDiscounts: false,
+      shippingDiscounts: false,
+      orderDiscounts: false,
     },
-    { 
-      id: 5, 
-      title: "Diwali Dhamaka", 
-      date: "20-03-2025", 
-      status: "Active", 
-      type: "Percentage" 
-    }
-  ];
-  
-  module.exports = discounts;
+    startDate: "21-03-2025",
+    endDateStatus: false,
+  },
+  {
+    id: 8976,
+    title: "discount 65",
+    status: true,
+    type: "percentage",
+    discountTiers: [{ id: 1742534136781, quantity: "76", discount: 32 }],
+    selectedProduct: "Specific Tags",
+    productOptions: ["fitness_tracker", "gaming_laptop", "wireless_earbuds"],
+    tagsOptions: ["Gdgsj"],
+    collectionOptions: "today",
+    discountStrategy: "",
+    combinations: {
+      productDiscounts: false,
+      shippingDiscounts: false,
+      orderDiscounts: false,
+    },
+    startDate: "21-03-2025",
+    endDateStatus: false,
+  },
+];
+
+module.exports = discounts;

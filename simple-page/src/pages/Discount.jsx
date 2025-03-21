@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Page,
   Grid,
@@ -20,16 +20,25 @@ import {
   Form,
   FormLayout,
 } from "@shopify/polaris";
-import { DeleteIcon, PlusCircleIcon, ArrowLeftIcon } from "@shopify/polaris-icons";
+import {
+  DeleteIcon,
+  PlusCircleIcon,
+  ArrowLeftIcon,
+} from "@shopify/polaris-icons";
 import "@shopify/polaris/build/esm/styles.css";
 import TagInput from "../components/TagsComp";
 import { collectonData } from "../constants/collectionData";
 import ProductsTextField from "../components/ProductsTextField";
 import DatePicker from "../components/DatePicker";
-import { createDiscount } from "../httpServices/discountServices";
+import {
+  createDiscount,
+  getDiscountById,
+} from "../httpServices/discountServices.js";
 import ToastMarkup from "../components/toastMarkup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { editDiscount } from "../httpServices/discountServices.js";
 function Discount() {
+  const [selectedDiscount, setSelectedDiscount] = useState(null);
   const [title, setTitle] = useState("");
   const [toastActive, setToastActive] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -42,11 +51,9 @@ function Discount() {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState("today");
-  // const [visible, setVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEndDate, setSelectedEndDate] = useState(new Date());
 
-  const handleChange = useCallback((newValue) => setDiscount(newValue), []);
   const [strategy, setStrategy] = useState("");
   const [checkedItems, setCheckedItems] = useState({
     productDiscounts: false,
@@ -59,9 +66,51 @@ function Discount() {
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const handlePage= ()=>{
+  const params = useParams();
+  const handlePage = () => {
     navigate("/");
-  }
+  };
+
+  const handleSelectedDiscountData = async (id) => {
+    const response = await getDiscountById(id);
+    if (response?.status === 200) {
+      setSelectedDiscount(response?.data);
+    }
+  };
+
+  useEffect(() => {
+    if (params?.id) {
+      handleSelectedDiscountData(params?.id);
+    }
+  }, []);
+  useEffect(() => {
+    if (params?.id && selectedDiscount) {
+      setTitle(selectedDiscount?.title);
+      setChecked(selectedDiscount?.status);
+      setDiscount(selectedDiscount?.type);
+      setProductDetails(selectedDiscount?.discountTiers);
+      setSelected(selectedDiscount?.selectedProduct);
+      setSelectedOptions(selectedDiscount?.productOptions);
+      setTags(selectedDiscount?.tagsOptions);
+      setSelectedCollection(selectedDiscount?.collectionOptions);
+      setStrategy(selectedDiscount?.discountStrategy);
+      setCheckedItems(selectedDiscount?.combinations);
+      if (selectedDiscount.startDate) {
+        const [day, month, year] = selectedDiscount.startDate.split("-");
+        setSelectedDate(new Date(year, month - 1, day));
+      } else {
+        setSelectedDate(new Date());
+      }
+      setCheckedEndTime(selectedDiscount?.endDate);
+      if (selectedDiscount.endDate) {
+        const [day, month, year] = selectedDiscount.endDate.split("-");
+        setSelectedEndDate(new Date(year, month - 1, day));
+      } else {
+        setSelectedEndDate(new Date());
+      }
+    }
+  }, [selectedDiscount]);
+  const handleChange = useCallback((newValue) => setDiscount(newValue), []);
   const handleTitleChange = useCallback((value) => {
     setTitle(value);
     setErrors((prev) => ({
@@ -114,16 +163,14 @@ function Discount() {
     }));
   };
   const formattedValue = useCallback((dateValue) => {
-    console.log(dateValue, "84698485");
     return `${dateValue.getDate()}-${String(dateValue.getMonth() + 1).padStart(
       2,
       "0"
     )}-${String(dateValue.getFullYear()).padStart(2, "0")}`;
   }, []);
 
-  console.log(selectedOptions, "54653676");
   const toggleToast = useCallback(() => setToastActive(false), []);
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     let validationErrors = {};
     const hasEmptyQuantity = productDetails.some(
       (tier) => !tier.quantity.trim()
@@ -135,7 +182,7 @@ function Discount() {
       setErrors(validationErrors);
       return;
     }
-    console.log(productDetails, "6843056");
+
     if (productDetails?.length === 0) {
       setToastMessage("Please add at least one discount tier.");
       setToastActive(true);
@@ -145,14 +192,13 @@ function Discount() {
       setToastActive(true);
       return;
     }
-    console.log(formattedValue(selectedDate), "8709657");
-    console.log(hasEmptyQuantity, "586554");
+
     const discountObject = {
       title: title,
       status: checked,
       type: discount,
       discountTiers: productDetails,
-      selectedProduct: selected,              
+      selectedProduct: selected,
       productOptions: selectedOptions,
       tagsOptions: tags,
       collectionOptions: selectedCollection,
@@ -162,28 +208,21 @@ function Discount() {
       ...(checkedEndTime ? { endDate: formattedValue(selectedEndDate) } : {}),
       endDateStatus: checkedEndTime,
     };
-    console.log(discountObject, "435690584");
-    // const response =  createDiscount(discountObject)
-    //   .then((data) => {
-    //     console.log("Discount Created:", data);
-    //     alert("Form submitted successfully!");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Submission failed:", error);
-    //   });
-    const response = await createDiscount(discountObject)
-    if(response?.message === "New discount added successfully"){
-      navigate('/');
+    console.log(discountObject,"3408569");
+    const response = params?.id
+      ? await editDiscount(params.id, discountObject)
+      : await createDiscount(discountObject);
+
+    if (response?.status === 200) {
+      navigate("/");
     }
-      console.log(response, "68435");
   };
-  console.log(selectedDate, "3469859");
   return (
     <Page>
       <Box paddingBlock={400}>
-      <Button  icon={ArrowLeftIcon} size="large" onClick={handlePage}/>
+        <Button icon={ArrowLeftIcon} size="large" onClick={handlePage} />
       </Box>
-      
+
       <Form onSubmit={handleSubmit}>
         <FormLayout>
           <Grid columns={{ xs: 1 }}>
@@ -544,7 +583,7 @@ function Discount() {
                       {productDetails?.map(
                         (item, index) =>
                           item?.quantity && (
-                            <List.Item>
+                            <List.Item key={index}>
                               Tier{index + 1} - Buy {item?.quantity} for{" "}
                               {item?.discount || 0}{" "}
                               {discount === "percentage" ? "%" : "$"} off

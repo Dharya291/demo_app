@@ -1,16 +1,9 @@
-import {
-  Page,
-  LegacyCard,
-  DataTable,
-  Button,
-  Box,
-  ButtonGroup,
-} from "@shopify/polaris";
+import { Page, Button } from "@shopify/polaris";
 import { PlusCircleIcon } from "@shopify/polaris-icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DiscountTable from "../components/discountTable";
-import { getAllDiscounts } from "../httpServices/discountServices";
+import { getAllDiscounts } from "../httpServices/discountServices.js";
 
 function Home() {
   const [discountData, setDiscountData] = useState([]);
@@ -22,7 +15,6 @@ function Home() {
   const getAllDiscountsData = async () => {
     try {
       const response = await getAllDiscounts();
-      console.log(response);
       setDiscountData(response);
     } catch (error) {
       console.error("Error:", error);
@@ -45,7 +37,10 @@ function Home() {
           Add Discount
         </Button>
       </div>
-      <DiscountTable discountData={discountData} setDiscountData={setDiscountData}/>
+      <DiscountTable
+        discountData={discountData}
+        setDiscountData={setDiscountData}
+      />
     </Page>
   );
 }
